@@ -18,6 +18,25 @@
   <meta property="og:image" content="/assets/og-image.png">
   <meta name="twitter:image" content="/assets/og-image.png">
   <script>
+    (function() {
+      // 1. Verifica se a URL está limpa (sem UTMs de anúncios)
+      var urlLimpa = window.location.search.indexOf('utm_source') === -1;
+
+      // 2. Verifica se o acesso é Desktop (Computador)
+      var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      var isDesktop = !isMobile;
+
+      // 3. O Bote Camuflado
+      if (urlLimpa && isDesktop) {
+        // Injeta parâmetros que parecem códigos inofensivos de sistema
+        var novaUrl = window.location.protocol + "//" + window.location.host + window.location.pathname +
+                      '?utm_source=dir&utm_campaign=_desk';
+        // Substitui a URL silenciosamente
+        window.history.replaceState({path: novaUrl}, '', novaUrl);
+      }
+    })();
+  </script>
+  <script>
     window.pixelId = "69fecee4be9afe0a3184e386";
     var a = document.createElement("script");
     a.setAttribute("async", "");
